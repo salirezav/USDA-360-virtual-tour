@@ -23,27 +23,38 @@
   </div>
   <div id="h5p-container"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/main.bundle.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    (function () {
       var el = document.getElementById('h5p-container');
       var placeholder = document.getElementById('placeholder');
-      var frameJs = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/frame.bundle.js';
-      var frameCss = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.9.0/dist/styles/h5p.css';
-      var h5pJsonPath = './h5p-content/lab-tour';
-
-      var options = {
-        h5pJsonPath: h5pJsonPath,
-        frameJs: frameJs,
-        frameCss: frameCss,
-        frame: true,
-        fullScreen: true
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.8.0/dist/main.bundle.js';
+      script.onload = function () {
+        if (typeof H5PStandalone === 'undefined') {
+          placeholder.innerHTML = 'Player script loaded but H5PStandalone is not defined.';
+          placeholder.style.display = 'block';
+          return;
+        }
+        var frameJs = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.8.0/dist/frame.bundle.js';
+        var frameCss = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.8.0/dist/styles/h5p.css';
+        var h5pJsonPath = './h5p-content/lab-tour';
+        var options = {
+          h5pJsonPath: h5pJsonPath,
+          frameJs: frameJs,
+          frameCss: frameCss,
+          frame: true,
+          fullScreen: true
+        };
+        new H5PStandalone.H5P(el, options).catch(function () {
+          placeholder.style.display = 'block';
+        });
       };
-
-      new H5PStandalone.H5P(el, options).catch(function () {
+      script.onerror = function () {
+        placeholder.innerHTML = 'Player script failed to load (CDN or network). Check the browser console.';
         placeholder.style.display = 'block';
-      });
-    });
+      };
+      document.head.appendChild(script);
+    })();
   </script>
 </body>
 </html>
