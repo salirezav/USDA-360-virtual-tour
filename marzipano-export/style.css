@@ -642,6 +642,36 @@ body.single-scene #sceneList, body.single-scene #sceneListToggle {
               visibility 0s 0s;
 }
 
+/* YouTube embed inside info hotspots */
+.info-hotspot-text--with-video {
+  max-height: 420px;
+}
+
+.info-hotspot-video-wrap {
+  position: relative;
+  width: 100%;
+  margin-top: 12px;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #000;
+}
+
+.info-hotspot-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.info-hotspot-modal .info-hotspot-video-wrap {
+  margin-top: 12px;
+  padding-bottom: 56.25%;
+}
+
 /* Info hotspot modal */
 
 .desktop .info-hotspot-modal {

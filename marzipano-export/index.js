@@ -178,15 +178,78 @@
   controls.registerMethod('inElement',    new Marzipano.ElementPressControlMethod(viewInElement,  'zoom', -velocity, friction), true);
   controls.registerMethod('outElement',   new Marzipano.ElementPressControlMethod(viewOutElement, 'zoom',  velocity, friction), true);
 
+  // Scene transition (https://www.marzipano.net/demos/transitions/)
+  function easeOutQuart(t) {
+    return -(Math.pow(t - 1, 4) - 1);
+  }
+
+  function throughBlack(ease) {
+    ease = ease || function (v) { return v; };
+    return function (t, newScene, oldScene) {
+      var eased = ease(t);
+      var offset;
+      if (eased < 0.5) {
+        offset = eased * 2;
+        newScene.layer().setEffects({ opacity: 0 });
+        oldScene.layer().setEffects({ colorOffset: [-offset, -offset, -offset, 0] });
+      } else {
+        offset = 1 - (eased - 0.5) * 2;
+        newScene.layer().setEffects({ opacity: 1, colorOffset: [-offset, -offset, -offset, 0] });
+      }
+    };
+  }
+
+  var sceneSwitchTransitionMs = 1000;
+
+  // Autoplay order (same as tour “slides”)
+  var autoSlideOrder = [
+    '2-overview',
+    '1-a-step-closer',
+    '3-cracker-machines',
+    '4-cracking-imaging-rig',
+    '0-the-sheller--separator',
+    '5-separator-imaging-rig'
+  ];
+  var autoSlideMs = 30000;
+  var autoSlideTimer = null;
+  var autoSlideIndex = 0;
+
+  function scheduleAutoSlide() {
+    clearTimeout(autoSlideTimer);
+    autoSlideTimer = setTimeout(function() {
+      autoSlideIndex = (autoSlideIndex + 1) % autoSlideOrder.length;
+      var next = findSceneById(autoSlideOrder[autoSlideIndex]);
+      if (next) {
+        switchScene(next, false);
+      }
+    }, autoSlideMs);
+  }
+
   function sanitize(s) {
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
-  function switchScene(scene) {
+  function switchScene(scene, instant) {
+    clearTimeout(autoSlideTimer);
+    autoSlideTimer = null;
+
     stopAutorotate();
     scene.view.setParameters(scene.data.initialViewParameters);
-    scene.scene.switchTo();
-    startAutorotate();
+
+    var idx = autoSlideOrder.indexOf(scene.data.id);
+    if (idx >= 0) {
+      autoSlideIndex = idx;
+    }
+
+    var switchOpts = instant ? { transitionDuration: 0 } : {
+      transitionDuration: sceneSwitchTransitionMs,
+      transitionUpdate: throughBlack(easeOutQuart)
+    };
+
+    scene.scene.switchTo(switchOpts, function() {
+      startAutorotate();
+      scheduleAutoSlide();
+    });
     updateSceneName(scene);
     updateSceneList(scene);
   }
@@ -328,6 +391,20 @@
     var text = document.createElement('div');
     text.classList.add('info-hotspot-text');
     text.innerHTML = hotspot.text;
+    if (hotspot.youtubeVideoId) {
+      text.classList.add('info-hotspot-text--with-video');
+      var videoWrap = document.createElement('div');
+      videoWrap.className = 'info-hotspot-video-wrap';
+      var iframe = document.createElement('iframe');
+      iframe.className = 'info-hotspot-video';
+      iframe.setAttribute('title', 'YouTube video');
+      iframe.setAttribute('loading', 'lazy');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + hotspot.youtubeVideoId + '?rel=0';
+      videoWrap.appendChild(iframe);
+      text.appendChild(videoWrap);
+    }
 
     // Place header and text into wrapper element.
     wrapper.appendChild(header);
@@ -386,7 +463,8 @@
     return null;
   }
 
-  // Display the initial scene.
-  switchScene(scenes[0]);
+  // Initial scene: Overview, no transition; autoplay starts after first scene is ready.
+  var initialScene = findSceneById('2-overview') || scenes[0];
+  switchScene(initialScene, true);
 
 })();

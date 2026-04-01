@@ -2,7 +2,7 @@ var APP_DATA = {
   "scenes": [
     {
       "id": "0-the-sheller--separator",
-      "name": "The Sheller & Separator",
+      "name": "The Sheller",
       "levels": [
         {
           "tileSize": 256,
@@ -215,7 +215,7 @@ var APP_DATA = {
     },
     {
       "id": "4-cracking-imaging-rig",
-      "name": "Cracking Imaging Rig",
+      "name": "Imaging rig over conveyor for cracked pecans",
       "levels": [
         {
           "tileSize": 256,
@@ -267,11 +267,19 @@ var APP_DATA = {
           "target": "0-the-sheller--separator"
         }
       ],
-      "infoHotspots": []
+      "infoHotspots": [
+        {
+          "yaw": 2.775116073585849,
+          "pitch": -0.6701417012989008,
+          "title": "Videos of Cracked Pecans",
+          "text": "This imaging rig monitors the cracked pecans to view and analyze the quality and quantity of cracks on pecan shells.",
+          "youtubeVideoId": "PiM07GGcMJ8"
+        }
+      ]
     },
     {
       "id": "5-separator-imaging-rig",
-      "name": "Separator Imaging Rig",
+      "name": "Separator",
       "levels": [
         {
           "tileSize": 256,
@@ -317,7 +325,15 @@ var APP_DATA = {
           "target": "3-cracker-machines"
         }
       ],
-      "infoHotspots": []
+      "infoHotspots": [
+        {
+          "yaw": -0.26353451411213236,
+          "pitch": 0.17254810780928764,
+          "title": "Separator Imaging Rig &amp; Videos",
+          "text": "This imaging rig detects and classifies intact half-yield kernels, shell pieces, and broken kernel pieces and outputs the ratio of intact halves over the whole yield.",
+          "youtubeVideoId": "IoRm4zW7ULk"
+        }
+      ]
     }
   ],
   "name": "USDA Virtual Tour",
