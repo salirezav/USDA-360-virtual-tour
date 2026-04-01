@@ -4,57 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>USDA Lab — 360 Virtual Tour</title>
-  <style>
-    body { margin: 0; font-family: system-ui, sans-serif; }
-    #placeholder {
-      padding: 1.5rem;
-      max-width: 40rem;
-      margin: 1rem auto;
-      background: #f5f5f5;
-      border-radius: 8px;
-      font-size: 0.95rem;
-    }
-    #h5p-container { min-height: 480px; }
-  </style>
+  <script>
+(function () {
+  // GitHub Pages project URLs are often opened without a trailing slash (e.g.
+  // /USDA-360-virtual-tour). A relative "marzipano-export/" then wrongly resolves
+  // to /marzipano-export/ on the hostname. Build an absolute path from pathname.
+  var path = location.pathname;
+  var segments = path.split('/').filter(Boolean);
+  var last = segments[segments.length - 1];
+  if (last && last.indexOf('.') !== -1) segments.pop();
+  var base = segments.length ? '/' + segments.join('/') + '/' : '/';
+  var target = base + 'marzipano-export/';
+  location.replace(target);
+})();
+  </script>
 </head>
 <body>
-  <div id="placeholder" style="display: none;">
-    <strong>No H5P content yet.</strong> Add your extracted Virtual Tour (360) package into <code>h5p-content/lab-tour</code> (see <code>h5p-content/README.md</code>), then reload.
-  </div>
-  <div id="h5p-container"></div>
-
-  <script>
-    (function () {
-      var el = document.getElementById('h5p-container');
-      var placeholder = document.getElementById('placeholder');
-      var script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.8.0/dist/main.bundle.js';
-      script.onload = function () {
-        if (typeof H5PStandalone === 'undefined') {
-          placeholder.innerHTML = 'Player script loaded but H5PStandalone is not defined.';
-          placeholder.style.display = 'block';
-          return;
-        }
-        var frameJs = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.8.0/dist/frame.bundle.js';
-        var frameCss = 'https://cdn.jsdelivr.net/npm/h5p-standalone@3.8.0/dist/styles/h5p.css';
-        var h5pJsonPath = './h5p-content/lab-tour';
-        var options = {
-          h5pJsonPath: h5pJsonPath,
-          frameJs: frameJs,
-          frameCss: frameCss,
-          frame: true,
-          fullScreen: true
-        };
-        new H5PStandalone.H5P(el, options).catch(function () {
-          placeholder.style.display = 'block';
-        });
-      };
-      script.onerror = function () {
-        placeholder.innerHTML = 'Player script failed to load (CDN or network). Check the browser console.';
-        placeholder.style.display = 'block';
-      };
-      document.head.appendChild(script);
-    })();
-  </script>
+  <noscript>
+    <p style="font-family: system-ui, sans-serif; padding: 1.5rem;">
+      Enable JavaScript to load the tour. On GitHub Pages, open the site URL with a trailing slash, then go to <code>marzipano-export/</code>.
+    </p>
+  </noscript>
+  <p style="font-family: system-ui, sans-serif; padding: 1.5rem;">Loading the virtual tour…</p>
 </body>
 </html>
