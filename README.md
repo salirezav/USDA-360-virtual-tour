@@ -1,18 +1,26 @@
 # USDA 360 Virtual Tour
 
-An interactive 360° lab tour built with **Marzipano** and served as static files (e.g. **GitHub Pages** or a custom domain).
+An interactive 360° lab tour built with **[Marzipano](https://www.marzipano.net/)** and served as static files (e.g. **GitHub Pages** or a custom domain).
+
+## Marzipano documentation
+
+- **[Documentation](https://www.marzipano.net/docs.html)** — How to initialize the viewer, create scenes, change scenes and views, autorotate, and hotspots.
+- **[API reference](https://www.marzipano.net/reference/)** — Detailed classes (`Viewer`, `Scene`, `RectilinearView`, etc.) for deeper customization beyond the [Marzipano Tool](https://www.marzipano.net/tool/) export.
+
+This repo extends the default export (scene order, autoplay, transitions, hotspot styling, embedded video) in `index.js`, `data.js`, and `style.css`.
 
 ## Project structure
 
 - **`360 images/`** — Source 360° panoramas (optional reference for authoring).
 - **`index.html`**, **`index.js`**, **`data.js`**, **`style.css`** — Tour app (root is the site entry).
-- **`vendor/`** — Marzipano and dependencies.
+- **`vendor/`** — Marzipano and bundled dependencies.
 - **`tiles/`**, **`img/`** — Panorama tiles and UI icons (from the Marzipano export).
 
 ## Updating the tour
 
 1. Edit the project in **Marzipano** and export the web bundle.
-2. Replace **`tiles/`**, **`img/`**, and any changed **`data.js`** / **`vendor/`** files at the **repo root** (same layout Marzipano generates, without an extra subfolder).
+2. Replace **`tiles/`**, **`img/`**, and any changed **`data.js`** / **`vendor/`** files at the **repo root** (same layout Marzipano generates).
+3. Re-apply or merge custom edits in **`index.js`** / **`style.css`** if you replace those files from a fresh export.
 
 ## GitHub Pages / hosting
 
