@@ -1,24 +1,27 @@
 # USDA 360 Virtual Tour
 
-An interactive 360° lab tour built with **Marzipano** and served as static files (e.g. **GitHub Pages**).
+An interactive 360° lab tour built with **Marzipano** and served as static files (e.g. **GitHub Pages** or a custom domain).
 
 ## Project structure
 
 - **`360 images/`** — Source 360° panoramas (optional reference for authoring).
-- **`marzipano-export/`** — Full Marzipano web export (`index.html`, `data.js`, `tiles/`, `img/`, `vendor/`). Replace or regenerate this folder from Marzipano when you update the tour.
-- **`index.html`** — Sends visitors to `marzipano-export/`.
+- **`index.html`**, **`index.js`**, **`data.js`**, **`style.css`** — Tour app (root is the site entry).
+- **`vendor/`** — Marzipano and dependencies.
+- **`tiles/`**, **`img/`** — Panorama tiles and UI icons (from the Marzipano export).
 
 ## Updating the tour
 
 1. Edit the project in **Marzipano** and export the web bundle.
-2. Replace the contents of `marzipano-export/` with the new export (keep paths relative as Marzipano generates them).
+2. Replace **`tiles/`**, **`img/`**, and any changed **`data.js`** / **`vendor/`** files at the **repo root** (same layout Marzipano generates, without an extra subfolder).
 
-## GitHub Pages
+## GitHub Pages / hosting
 
-1. Repo: **Settings → Pages** → deploy from branch **main** (or default), folder **/ (root)**.
-2. The site root redirects to `marzipano-export/` using the correct path even when the URL has no trailing slash (e.g. `github.io/<repo>` vs `github.io/<repo>/`).
-3. **`.nojekyll`** is included so GitHub does not run Jekyll on the branch; panorama tiles and other static assets are published as-is.
+1. Repo: **Settings → Pages** → deploy from branch **main** (or your default), folder **/ (root)**.
+2. The tour loads at `https://<user>.github.io/USDA-360-virtual-tour/` or your custom domain path with **no** `marzipano-export/` segment.
+3. **`.nojekyll`** is included so GitHub does not run Jekyll on the branch; panorama tiles are published as-is.
 
-Commit the **entire** Marzipano export (`tiles/`, `img/`, `vendor/`, etc.). If panoramas are missing on the live site, they are usually not pushed to the remote or are blocked by `.gitignore`.
+Commit **`tiles/`**, **`img/`**, and **`vendor/`** if the live site is missing imagery—those folders must be in the remote repo.
+
+**Legacy URL:** `marzipano-export/index.html` only redirects to the parent folder so old `/marzipano-export/` links still work. You can delete that folder after search engines and bookmarks update.
 
 No build step is required.
